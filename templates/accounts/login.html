@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - AI Project Evaluator{% endblock %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 2rem auto;">
+    <div class="card">
+        <h2 style="text-align: center; color: #667eea; margin-bottom: 2rem;">Login</h2>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            
+            <button type="submit" class="btn" style="width: 100%; padding: 12px;">
+                Login
+            </button>
+        </form>
+        
+        <div style="margin-top: 1.5rem; text-align: center; padding-top: 1.5rem; border-top: 1px solid #ddd;">
+            <p>Don't have an account?</p>
+            <a href="{% url 'faculty_register' %}" style="color: #667eea; text-decoration: none;">
+                Register as Faculty
+            </a> | 
+            <a href="{% url 'student_register' %}" style="color: #667eea; text-decoration: none;">
+                Register as Student
+            </a>
+        </div>
+        
+        <div style="margin-top: 1rem; text-align: center;">
+            <p style="font-size: 0.9rem; color: #666;">
+                Project leaders? 
+                <a href="{% url 'leader_login' %}" style="color: #667eea; text-decoration: none;">
+                    Click here to login
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,180 @@
+# ============================================
+# AI Project Evaluator - .gitignore
+# ============================================
+
+# ⚠️ CRITICAL: Environment Variables (API Keys, Passwords)
+.env
+.env.local
+.env.production
+.env.staging
+*.env
+
+# ⚠️ CRITICAL: Database (Contains all user data)
+db.sqlite3
+db.sqlite3-journal
+*.sqlite3
+*.db
+
+# ⚠️ CRITICAL: Media Files (Uploaded project reports)
+media/
+media/project_reports/
+mediafiles/
+
+# Python
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment - NEVER upload this (too large)
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.virtualenv/
+
+# Django
+*.log
+local_settings.py
+staticfiles/
+static_root/
+
+# PyCache
+__pycache__/
+*.pyc
+*.pyo
+*~
+
+# IDE - Visual Studio Code
+.vscode/
+*.code-workspace
+
+# IDE - PyCharm
+.idea/
+*.iml
+*.iws
+.idea_modules/
+
+# IDE - Other
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# MongoDB
+*.mongodb
+
+# Documentation builds
+docs/_build/
+
+# Compiled translations
+*.mo
+*.pot
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath
+*.sage.py
+
+# Spyder
+.spyderproject
+.spyproject
+
+# Rope
+.ropeproject
+
+# mkdocs
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre
+.pyre/
+
+# pytype
+.pytype/
+
+# Cython
+cython_debug/
+
+# ============================================
+# PROJECT SPECIFIC
+# ============================================
+
+# Uploaded files - Student project reports
+project_reports/
+
+# Collected static files
+staticfiles/
+
+# Local development settings
+local_settings.py
+
+# ============================================
+# KEEP THESE FILES (EXCEPTIONS)
+# ============================================
+!.gitignore
+!.env.example
+!README.md
+!requirements.txt
+!*/migrations/__init__.py

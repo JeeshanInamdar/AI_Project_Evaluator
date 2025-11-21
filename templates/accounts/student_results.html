@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}My Results{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2 style="color: #667eea;">Project Evaluation Results</h2>
+    <p style="color: #666;">USN: {{ student.usn }} | Name: {{ student.full_name }}</p>
+</div>
+
+{% if results %}
+    {% for result in results %}
+    <div class="card">
+        <h3 style="color: #667eea; margin-bottom: 1rem;">{{ result.project.project_name }}</h3>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+            <div>
+                <strong>Team:</strong> {{ result.team.team_name }}
+            </div>
+            <div>
+                <strong>Faculty:</strong> {{ result.team.faculty.full_name }}
+            </div>
+            <div>
+                <strong>Submitted:</strong> {{ result.project.submitted_at|date:"M d, Y" }}
+            </div>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+            <div style="padding: 1.5rem; background: #f8f9fa; border-radius: 8px;">
+                <h4 style="color: #667eea; margin-bottom: 1rem;">🤖 AI Evaluation</h4>
+                <div style="font-size: 2rem; font-weight: bold; color: #667eea; margin-bottom: 0.5rem;">
+                    {{ result.evaluation.ai_marks }} / 100
+                </div>
+                {% if result.evaluation.ai_feedback %}
+                <div style="margin-top: 1rem;">
+                    <strong>Feedback:</strong>
+                    <p style="margin-top: 0.5rem; color: #666;">{{ result.evaluation.ai_feedback }}</p>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div style="padding: 1.5rem; background: #f8f9fa; border-radius: 8px;">
+                <h4 style="color: #667eea; margin-bottom: 1rem;">👨‍🏫 Faculty Evaluation</h4>
+                <div style="font-size: 2rem; font-weight: bold; color: #667eea; margin-bottom: 0.5rem;">
+                    {{ result.evaluation.faculty_marks }} / 100
+                </div>
+                {% if result.evaluation.faculty_feedback %}
+                <div style="margin-top: 1rem;">
+                    <strong>Feedback:</strong>
+                    <p style="margin-top: 0.5rem; color: #666;">{{ result.evaluation.faculty_feedback }}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <div class="card" style="text-align: center; padding: 3rem;">
+        <h3 style="color: #666;">No Evaluated Projects Yet</h3>
+        <p style="color: #999; margin-top: 1rem;">
+            Your project results will appear here once faculty completes the evaluation.
+        </p>
+    </div>
+{% endif %}
+{% endblock %}

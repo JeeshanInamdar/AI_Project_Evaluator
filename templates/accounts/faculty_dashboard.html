@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}Faculty Dashboard{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2 style="color: #667eea;">Welcome, {{ faculty.full_name }}!</h2>
+    <p style="color: #666;">{{ faculty.designation }} - {{ faculty.department }}</p>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>{{ total_teams }}</h3>
+        <p>Total Teams</p>
+    </div>
+    <div class="stat-card">
+        <h3>{{ submitted_projects }}</h3>
+        <p>Submitted Projects</p>
+    </div>
+    <div class="stat-card">
+        <h3>{{ evaluated_projects }}</h3>
+        <p>Evaluated Projects</p>
+    </div>
+</div>
+
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h3>My Project Teams</h3>
+        <a href="{% url 'create_team' %}" class="btn">+ Create New Team</a>
+    </div>
+    
+    {% if teams %}
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Team Name</th>
+                        <th>Leader</th>
+                        <th>Members</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for team in teams %}
+                    <tr>
+                        <td><strong>{{ team.team_name }}</strong></td>
+                        <td>
+                            {% if team.leader %}
+                                {{ team.leader.full_name }}<br>
+                                <small style="color: #666;">{{ team.leader.usn }}</small>
+                            {% else %}
+                                <span style="color: #dc3545;">No leader assigned</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ team.members.count }} / 4</td>
+                        <td>
+                            {% if team.project %}
+                                <span class="badge badge-success">Project Submitted</span>
+                            {% else %}
+                                <span class="badge badge-warning">Pending</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                <a href="{% url 'team_detail' team.id %}" class="btn" style="padding: 6px 12px; font-size: 0.9rem; white-space: nowrap;">
+                                    Manage Team
+                                </a>
+                                {% if team.project %}
+                                    <a href="{% url 'view_project' team.project.id %}" class="btn btn-success" style="padding: 6px 12px; font-size: 0.9rem; white-space: nowrap;">
+                                        View Project
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 2rem; color: #666;">
+            <p>No teams created yet. Create your first project team!</p>
+            <a href="{% url 'create_team' %}" class="btn" style="margin-top: 1rem;">Create Team</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

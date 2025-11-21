@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Submit Project{% endblock %}
+{% block content %}
+<div style="max-width: 700px; margin: 0 auto;">
+    <div class="card">
+        <h2 style="color: #667eea; margin-bottom: 1rem;">📤 Submit Project</h2>
+        <p style="color: #666; margin-bottom: 2rem;">Team: {{ team.team_name }}</p>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="project_name">Project Name *</label>
+                <input type="text" id="project_name" name="project_name" required placeholder="Enter your project name">
+            </div>
+            <div class="form-group">
+                <label for="github_link">GitHub Repository Link *</label>
+                <input type="url" id="github_link" name="github_link" required placeholder="https://github.com/username/repository">
+                <small style="color: #666; font-size: 0.9rem;">Make sure your repository is public or accessible</small>
+            </div>
+            <div class="form-group">
+                <label for="project_report">Project Report (PDF) *</label>
+                <input type="file" id="project_report" name="project_report" accept=".pdf" required>
+                <small style="color: #666; font-size: 0.9rem;">Upload your project report in PDF format</small>
+            </div>
+            <div style="padding: 1rem; background: #e7f3ff; border-radius: 8px; margin-bottom: 1.5rem;">
+                <strong>⚠️ Important:</strong>
+                <ul style="margin-left: 1.5rem; margin-top: 0.5rem; font-size: 0.95rem;">
+                    <li>All fields are mandatory</li>
+                    <li>Only PDF files are accepted for reports</li>
+                    <li>Ensure GitHub link is correct and accessible</li>
+                    <li>You can edit your submission later if needed</li>
+                </ul>
+            </div>
+            <button type="submit" class="btn" style="width: 100%; padding: 12px;">Submit Project</button>
+            <a href="{% url 'leader_dashboard' %}" class="btn btn-secondary" style="width: 100%; padding: 12px; margin-top: 1rem; display: block; text-align: center;">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

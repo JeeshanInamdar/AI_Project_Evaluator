@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ team.team_name }} - Team Details{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h2 style="color: #667eea;">{{ team.team_name }}</h2>
+            <p style="color: #666;">Faculty: {{ team.faculty.full_name }}</p>
+        </div>
+        <a href="{% url 'faculty_dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+</div>
+
+<div class="card">
+    <h3 style="margin-bottom: 1.5rem;">Add Team Member</h3>
+    
+    {% if members.count < 4 %}
+    <form method="post" action="{% url 'add_team_member' team.id %}" style="display: flex; gap: 1rem; align-items: end;">
+        {% csrf_token %}
+        <div class="form-group" style="flex: 1; margin-bottom: 0;">
+            <label for="usn">Student USN</label>
+            <input type="text" id="usn" name="usn" required placeholder="Enter USN" style="text-transform: uppercase;">
+        </div>
+        <button type="submit" class="btn" style="height: 42px;">Add Member</button>
+    </form>
+    {% else %}
+    <div style="padding: 1rem; background: #fff3cd; border-radius: 8px; color: #856404;">
+        ⚠️ Team is full. Maximum 4 members allowed.
+    </div>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h3 style="margin-bottom: 1.5rem;">Team Members ({{ members.count }} / 4)</h3>
+    
+    {% if members %}
+    <table>
+        <thead>
+            <tr>
+                <th>USN</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for member in members %}
+            <tr>
+                <td><strong>{{ member.student.usn }}</strong></td>
+                <td>{{ member.student.full_name }}</td>
+                <td>{{ member.student.department }}</td>
+                <td>
+                    {% if member.is_leader %}
+                        <span class="badge badge-success">👑 Leader</span>
+                    {% else %}
+                        <span class="badge badge-info">Member</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if not member.is_leader %}
+                        <a href="{% url 'set_team_leader' team.id member.student.id %}" 
+                           class="btn btn-success" 
+                           style="padding: 6px 12px; font-size: 0.9rem;"
+                           onclick="return confirm('Set {{ member.student.full_name }} as team leader? Credentials will be sent to their email.');">
+                            Make Leader
+                        </a>
+                    {% endif %}
+                    <a href="{% url 'remove_team_member' team.id member.id %}" 
+                       class="btn btn-danger" 
+                       style="padding: 6px 12px; font-size: 0.9rem;"
+                       onclick="return confirm('Remove {{ member.student.full_name }} from team?');">
+                        Remove
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div style="text-align: center; padding: 2rem; color: #666;">
+        <p>No members added yet. Add students using their USN.</p>
+    </div>
+    {% endif %}
+</div>
+
+{% if team.leader %}
+<div class="card" style="background: #e7f3ff;">
+    <h3 style="color: #667eea; margin-bottom: 1rem;">📧 Leader Credentials</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+        <div>
+            <strong>Username:</strong> {{ team.leader_username }}
+        </div>
+        <div>
+            <strong>Password:</strong> {{ team.leader_password }}
+        </div>
+    </div>
+    <p style="margin-top: 1rem; color: #666; font-size: 0.9rem;">
+        ✅ Credentials have been sent to {{ team.leader.user.email }}
+    </p>
+</div>
+{% endif %}
+
+{% if team.project %}
+<div class="card">
+    <h3 style="margin-bottom: 1.5rem;">📄 Project Submission</h3>
+    <div style="padding: 1rem; background: #d4edda; border-radius: 8px; color: #155724; margin-bottom: 1rem;">
+        ✅ Project has been submitted!
+    </div>
+    <div>
+        <strong>Project Name:</strong> {{ team.project.project_name }}<br>
+        <strong>Submitted On:</strong> {{ team.project.submitted_at|date:"M d, Y, g:i A" }}
+    </div>
+    <a href="{% url 'view_project' team.project.id %}" class="btn" style="margin-top: 1rem;">
+        View Project Details
+    </a>
+</div>
+{% endif %}
+{% endblock %}

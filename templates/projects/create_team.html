@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Team{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 2rem auto;">
+    <div class="card">
+        <h2 style="color: #667eea; margin-bottom: 2rem;">Create New Project Team</h2>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="team_name">Team Name *</label>
+                <input type="text" id="team_name" name="team_name" required placeholder="e.g., AI Innovators">
+                <small style="color: #666; font-size: 0.9rem;">Choose a unique and descriptive name for your team</small>
+            </div>
+            
+            <button type="submit" class="btn" style="width: 100%; padding: 12px;">
+                Create Team
+            </button>
+            
+            <a href="{% url 'faculty_dashboard' %}" class="btn btn-secondary" style="width: 100%; padding: 12px; margin-top: 1rem; display: block; text-align: center;">
+                Cancel
+            </a>
+        </form>
+        
+        <div style="margin-top: 2rem; padding: 1rem; background: #e7f3ff; border-radius: 8px;">
+            <strong>📋 Next Steps:</strong>
+            <ol style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                <li>Create the team</li>
+                <li>Add up to 4 students using their USN</li>
+                <li>Assign one student as team leader</li>
+                <li>Leader credentials will be emailed automatically</li>
+            </ol>
+        </div>
+    </div>
+</div>
+{% endblock %}

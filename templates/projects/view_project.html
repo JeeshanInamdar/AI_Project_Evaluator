@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %}{{ project.project_name }}{% endblock %}
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h2 style="color: #667eea;">{{ project.project_name }}</h2>
+            <p style="color: #666;">Team: {{ team.team_name }}</p>
+        </div>
+        <a href="{% url 'faculty_dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+</div>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+    <div class="card">
+        <h3 style="margin-bottom: 1rem;">📋 Project Details</h3>
+        <div style="display: grid; gap: 1rem;">
+            <div><strong>Project Name:</strong><br>{{ project.project_name }}</div>
+            <div><strong>GitHub Repository:</strong><br><a href="{{ project.github_link }}" target="_blank" style="color: #667eea; word-break: break-all;">{{ project.github_link }}</a></div>
+            <div><strong>Report:</strong><br><a href="{{ project.project_report.url }}" target="_blank" class="btn" style="padding: 8px 16px; font-size: 0.9rem; margin-top: 0.5rem;">📄 Download Report</a></div>
+            <div><strong>Submitted On:</strong><br>{{ project.submitted_at|date:"M d, Y, g:i A" }}</div>
+        </div>
+    </div>
+    <div class="card">
+        <h3 style="margin-bottom: 1rem;">👥 Team Members</h3>
+        <table>
+            <thead><tr><th>USN</th><th>Name</th><th>Role</th></tr></thead>
+            <tbody>
+                {% for member in members %}
+                <tr>
+                    <td>{{ member.student.usn }}</td>
+                    <td>{{ member.student.full_name }}</td>
+                    <td>{% if member.is_leader %}<span class="badge badge-success">Leader</span>{% else %}<span class="badge badge-info">Member</span>{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% if evaluation %}
+<div class="card">
+    <h3 style="margin-bottom: 1.5rem;">📊 Evaluation Results</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+        <div style="padding: 1.5rem; background: #f8f9fa; border-radius: 8px;">
+            <h4 style="color: #667eea; margin-bottom: 1rem;">🤖 AI Evaluation</h4>
+            {% if evaluation.ai_marks %}
+                <div style="font-size: 2rem; font-weight: bold; color: #667eea; margin-bottom: 1rem;">{{ evaluation.ai_marks }} / 100</div>
+                {% if evaluation.ai_feedback %}<div><strong>Feedback:</strong><p style="margin-top: 0.5rem; color: #666;">{{ evaluation.ai_feedback }}</p></div>{% endif %}
+            {% else %}<span class="badge badge-warning">Not Evaluated</span>{% endif %}
+        </div>
+        <div style="padding: 1.5rem; background: #f8f9fa; border-radius: 8px;">
+            <h4 style="color: #667eea; margin-bottom: 1rem;">👨‍🏫 Faculty Evaluation</h4>
+            {% if evaluation.faculty_marks %}
+                <div style="font-size: 2rem; font-weight: bold; color: #667eea; margin-bottom: 1rem;">{{ evaluation.faculty_marks }} / 100</div>
+                {% if evaluation.faculty_feedback %}<div><strong>Feedback:</strong><p style="margin-top: 0.5rem; color: #666;">{{ evaluation.faculty_feedback }}</p></div>{% endif %}
+            {% else %}<span class="badge badge-warning">Not Evaluated</span>{% endif %}
+        </div>
+    </div>
+    <a href="{% url 'evaluate_project' project.id %}" class="btn" style="margin-top: 1.5rem;">{% if evaluation.ai_marks or evaluation.faculty_marks %}View/Edit Evaluation{% else %}Evaluate Project{% endif %}</a>
+</div>
+{% else %}
+<div class="card" style="text-align: center;">
+    <h3 style="color: #666; margin-bottom: 1rem;">Project Not Evaluated Yet</h3>
+    <p style="color: #999; margin-bottom: 1.5rem;">Click below to start evaluating this project</p>
+    <a href="{% url 'evaluate_project' project.id %}" class="btn">Start Evaluation</a>
+</div>
+{% endif %}
+{% endblock %}

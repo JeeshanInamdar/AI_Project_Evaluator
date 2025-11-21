@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+
+{% block title %}Evaluate Project{% endblock %}
+
+{% block extra_css %}
+<style>
+    .ai-feedback {
+        line-height: 1.8;
+    }
+
+    .ai-feedback h4 {
+        color: #667eea;
+        margin-top: 1.5rem;
+        margin-bottom: 0.75rem;
+        font-size: 1.1rem;
+    }
+
+    .ai-feedback h4:first-child {
+        margin-top: 0;
+    }
+
+    .ai-feedback ul {
+        margin-left: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .ai-feedback li {
+        margin-bottom: 0.5rem;
+        list-style-type: disc;
+    }
+
+    .ai-feedback p {
+        margin-bottom: 1rem;
+    }
+
+    .ai-feedback strong {
+        color: #333;
+        font-weight: 600;
+    }
+
+    .criteria-score {
+        background: #f8f9fa;
+        padding: 0.75rem;
+        border-radius: 6px;
+        margin-bottom: 0.75rem;
+        border-left: 3px solid #667eea;
+    }
+
+    .criteria-score strong {
+        color: #667eea;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2 style="color: #667eea;">Evaluate: {{ project.project_name }}</h2>
+    <p style="color: #666;">Team: {{ project.team.team_name }}</p>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+    <div class="card">
+        <h3 style="margin-bottom: 1rem;">📄 Project Details</h3>
+        <div style="display: grid; gap: 1rem;">
+            <div>
+                <strong>GitHub Repository:</strong><br>
+                <a href="{{ project.github_link }}" target="_blank" style="color: #667eea; word-break: break-all;">
+                    {{ project.github_link }}
+                </a>
+            </div>
+            <div>
+                <strong>Project Report:</strong><br>
+                <a href="{{ project.project_report.url }}" target="_blank" class="btn" style="padding: 8px 16px; font-size: 0.9rem; margin-top: 0.5rem;">
+                    📄 Download Report
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3 style="margin-bottom: 1rem;">👥 Team Members</h3>
+        <div style="display: grid; gap: 0.5rem;">
+            {% for member in members %}
+            <div style="padding: 0.5rem; background: #f8f9fa; border-radius: 4px;">
+                <strong>{{ member.student.full_name }}</strong> ({{ member.student.usn }})
+                {% if member.is_leader %}
+                    <span class="badge badge-success" style="margin-left: 0.5rem;">Leader</span>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+    <div class="card">
+        <h3 style="margin-bottom: 1.5rem;">🤖 AI Evaluation</h3>
+
+        {% if evaluation and evaluation.ai_marks %}
+            <div style="padding: 1.5rem; background: #e7f3ff; border-radius: 8px; margin-bottom: 1.5rem;">
+                <div style="font-size: 2.5rem; font-weight: bold; color: #667eea; margin-bottom: 0.5rem; text-align: center;">
+                    {{ evaluation.ai_marks }} / 100
+                </div>
+                <div style="text-align: center; color: #666; font-size: 0.95rem;">
+                    Evaluated on {{ evaluation.ai_evaluated_at|date:"M d, Y at g:i A" }}
+                </div>
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <h4 style="color: #667eea; margin-bottom: 1rem;">📊 Evaluation Feedback</h4>
+                <div class="ai-feedback" style="background: white; padding: 1.5rem; border-radius: 8px; border: 1px solid #e0e0e0;">
+                    {{ evaluation.ai_feedback|safe }}
+                </div>
+            </div>
+
+            <form method="post" action="{% url 'ai_evaluate_project' project.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-secondary" style="width: 100%;" onclick="return confirm('Re-evaluate this project with AI? This will replace the current AI evaluation.');">
+                    🔄 Re-evaluate with AI
+                </button>
+            </form>
+        {% else %}
+            <div style="padding: 2rem; text-align: center; background: #f8f9fa; border-radius: 8px; margin-bottom: 1.5rem;">
+                <p style="color: #666; margin-bottom: 1rem;">
+                    Get AI-powered evaluation based on your defined criteria.
+                </p>
+                <p style="color: #999; font-size: 0.9rem;">
+                    AI will analyze the project report and provide detailed feedback.
+                </p>
+            </div>
+
+            <form method="post" action="{% url 'ai_evaluate_project' project.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn" style="width: 100%; padding: 15px; font-size: 1.1rem;">
+                    🤖 Evaluate with AI
+                </button>
+            </form>
+        {% endif %}
+    </div>
+
+    <div class="card">
+        <h3 style="margin-bottom: 1.5rem;">👨‍🏫 Faculty Evaluation</h3>
+
+        <form method="post" action="{% url 'faculty_evaluate_project' project.id %}">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="faculty_marks">Your Marks (out of 100) *</label>
+                <input type="number" id="faculty_marks" name="faculty_marks" required min="0" max="100"
+                       value="{% if evaluation.faculty_marks %}{{ evaluation.faculty_marks }}{% endif %}"
+                       style="font-size: 1.1rem; padding: 12px;">
+            </div>
+
+            <div class="form-group">
+                <label for="faculty_feedback">Your Feedback</label>
+                <textarea id="faculty_feedback" name="faculty_feedback" rows="8"
+                          placeholder="Provide detailed feedback on the project..."
+                          style="font-size: 1rem;">{% if evaluation.faculty_feedback %}{{ evaluation.faculty_feedback }}{% endif %}</textarea>
+                <small style="color: #666; font-size: 0.9rem;">
+                    Provide constructive feedback to help students improve.
+                </small>
+            </div>
+
+            <button type="submit" class="btn btn-success" style="width: 100%; padding: 12px; font-size: 1.05rem;">
+                {% if evaluation and evaluation.faculty_marks %}
+                    ✏️ Update Evaluation
+                {% else %}
+                    ✅ Submit Evaluation
+                {% endif %}
+            </button>
+        </form>
+
+        {% if evaluation and evaluation.faculty_marks %}
+        <div style="margin-top: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+            <small style="color: #666;">
+                Last updated: {{ evaluation.faculty_evaluated_at|date:"M d, Y at g:i A" }}
+            </small>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div style="text-align: center; margin-top: 2rem;">
+    <a href="{% url 'view_project' project.id %}" class="btn btn-secondary">
+        ← Back to Project Details
+    </a>
+</div>
+{% endblock %}

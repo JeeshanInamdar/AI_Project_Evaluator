@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - AI Project Evaluator{% endblock %}
+
+{% block content %}
+<div style="text-align: center; padding: 3rem 0;">
+    <h1 style="font-size: 3rem; color: #667eea; margin-bottom: 1rem;">
+        Welcome to AI Project Evaluator
+    </h1>
+    <p style="font-size: 1.2rem; color: #666; margin-bottom: 2rem;">
+        Streamline project evaluation with AI-powered assessment
+    </p>
+    
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="{% url 'login' %}" class="btn" style="font-size: 1.1rem; padding: 15px 30px;">
+            Login
+        </a>
+        <a href="{% url 'faculty_register' %}" class="btn btn-secondary" style="font-size: 1.1rem; padding: 15px 30px;">
+            Faculty Registration
+        </a>
+        <a href="{% url 'student_register' %}" class="btn btn-secondary" style="font-size: 1.1rem; padding: 15px 30px;">
+            Student Registration
+        </a>
+    </div>
+</div>
+
+<div class="stats-grid" style="margin-top: 3rem;">
+    <div class="card" style="text-align: center;">
+        <h3 style="color: #667eea;">📚</h3>
+        <h4>For Faculty</h4>
+        <p>Create project teams, manage submissions, and evaluate projects with AI assistance.</p>
+    </div>
+    
+    <div class="card" style="text-align: center;">
+        <h3 style="color: #667eea;">👥</h3>
+        <h4>For Students</h4>
+        <p>Join project teams, submit your work, and receive comprehensive evaluation feedback.</p>
+    </div>
+    
+    <div class="card" style="text-align: center;">
+        <h3 style="color: #667eea;">🤖</h3>
+        <h4>AI-Powered</h4>
+        <p>Leverage Gemini AI for intelligent, consistent, and detailed project evaluations.</p>
+    </div>
+</div>
+
+<div class="card" style="margin-top: 2rem;">
+    <h2 style="color: #667eea; margin-bottom: 1rem;">How It Works</h2>
+    
+    <div style="display: grid; gap: 1.5rem;">
+        <div>
+            <h3>1. Faculty Creates Teams</h3>
+            <p>Faculty members create project teams and add up to 4 students using their USN (University Seat Numbers).</p>
+        </div>
+        
+        <div>
+            <h3>2. Team Leader Assignment</h3>
+            <p>Faculty designates one team member as the leader. Login credentials are automatically generated and emailed to the leader.</p>
+        </div>
+        
+        <div>
+            <h3>3. Project Submission</h3>
+            <p>Team leaders login and submit project reports (PDF) along with GitHub repository links.</p>
+        </div>
+        
+        <div>
+            <h3>4. AI Evaluation</h3>
+            <p>Projects are evaluated by Gemini AI based on faculty-defined criteria, providing detailed feedback and marks.</p>
+        </div>
+        
+        <div>
+            <h3>5. Faculty Review</h3>
+            <p>Faculty members review AI evaluations, provide their own assessment, and finalize marks.</p>
+        </div>
+        
+        <div>
+            <h3>6. Results Publication</h3>
+            <p>Students can view comprehensive results including AI marks, faculty marks, and detailed feedback.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

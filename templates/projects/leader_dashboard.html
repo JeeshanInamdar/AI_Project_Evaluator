@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Leader Dashboard{% endblock %}
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h2 style="color: #667eea;">👑 Team Leader Portal</h2>
+            <p style="color: #666;">Team: {{ team.team_name }}</p>
+        </div>
+        <a href="{% url 'leader_logout' %}" class="btn btn-danger">Logout</a>
+    </div>
+</div>
+<div class="card">
+    <h3 style="margin-bottom: 1.5rem;">Team Members</h3>
+    <table>
+        <thead><tr><th>USN</th><th>Name</th><th>Department</th><th>Role</th></tr></thead>
+        <tbody>
+            {% for member in members %}
+            <tr>
+                <td>{{ member.student.usn }}</td>
+                <td>{{ member.student.full_name }}</td>
+                <td>{{ member.student.department }}</td>
+                <td>{% if member.is_leader %}<span class="badge badge-success">Leader</span>{% else %}<span class="badge badge-info">Member</span>{% endif %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="card">
+    <h3 style="margin-bottom: 1.5rem;">Project Submission</h3>
+    {% if project %}
+        <div style="padding: 1rem; background: #d4edda; border-radius: 8px; color: #155724; margin-bottom: 1.5rem;">✅ Project has been submitted successfully!</div>
+        <div style="display: grid; gap: 1rem; margin-bottom: 1.5rem;">
+            <div><strong>Project Name:</strong> {{ project.project_name }}</div>
+            <div><strong>GitHub Link:</strong> <a href="{{ project.github_link }}" target="_blank" style="color: #667eea;">{{ project.github_link }}</a></div>
+            <div><strong>Report:</strong> <a href="{{ project.project_report.url }}" target="_blank" class="btn" style="padding: 6px 12px; font-size: 0.9rem;">📄 Download Report</a></div>
+            <div><strong>Submitted On:</strong> {{ project.submitted_at|date:"M d, Y, g:i A" }}</div>
+            <div><strong>Status:</strong> <span class="badge badge-{% if project.status == 'evaluated' %}success{% elif project.status == 'submitted' %}info{% else %}warning{% endif %}">{{ project.get_status_display }}</span></div>
+        </div>
+        <a href="{% url 'edit_project' project.id %}" class="btn">✏️ Edit Submission</a>
+    {% else %}
+        <div style="padding: 1rem; background: #fff3cd; border-radius: 8px; color: #856404; margin-bottom: 1.5rem;">⚠️ No project submitted yet. Submit your project below.</div>
+        <a href="{% url 'submit_project' %}" class="btn btn-success">📤 Submit Project</a>
+    {% endif %}
+</div>
+{% endblock %}

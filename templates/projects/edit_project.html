@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Edit Project{% endblock %}
+{% block content %}
+<div style="max-width: 700px; margin: 0 auto;">
+    <div class="card">
+        <h2 style="color: #667eea; margin-bottom: 1rem;">✏️ Edit Project Submission</h2>
+        <p style="color: #666; margin-bottom: 2rem;">Team: {{ team.team_name }}</p>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="project_name">Project Name *</label>
+                <input type="text" id="project_name" name="project_name" value="{{ project.project_name }}" required>
+            </div>
+            <div class="form-group">
+                <label for="github_link">GitHub Repository Link *</label>
+                <input type="url" id="github_link" name="github_link" value="{{ project.github_link }}" required>
+            </div>
+            <div class="form-group">
+                <label for="project_report">Project Report (PDF)</label>
+                <input type="file" id="project_report" name="project_report" accept=".pdf">
+                <small style="color: #666; font-size: 0.9rem;">Current file: <a href="{{ project.project_report.url }}" target="_blank" style="color: #667eea;">{{ project.project_report.name }}</a><br>Leave empty to keep current file</small>
+            </div>
+            <div style="padding: 1rem; background: #fff3cd; border-radius: 8px; margin-bottom: 1.5rem;">
+                <strong>ℹ️ Note:</strong><p style="margin-top: 0.5rem; font-size: 0.95rem;">Faculty will be notified of any changes to your submission.</p>
+            </div>
+            <button type="submit" class="btn" style="width: 100%; padding: 12px;">Update Project</button>
+            <a href="{% url 'leader_dashboard' %}" class="btn btn-secondary" style="width: 100%; padding: 12px; margin-top: 1rem; display: block; text-align: center;">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

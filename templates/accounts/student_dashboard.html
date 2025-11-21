@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Dashboard{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2 style="color: #667eea;">Welcome, {{ student.full_name }}!</h2>
+    <p style="color: #666;">USN: {{ student.usn }} | {{ student.department }} | Semester {{ student.semester }}</p>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>{{ teams|length }}</h3>
+        <p>Teams Joined</p>
+    </div>
+    <div class="stat-card">
+        <h3>{{ projects|length }}</h3>
+        <p>Projects</p>
+    </div>
+</div>
+
+<div class="card">
+    <h3 style="margin-bottom: 1.5rem;">My Project Teams</h3>
+    
+    {% if teams %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Team Name</th>
+                    <th>Faculty</th>
+                    <th>Leader</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for membership in team_memberships %}
+                <tr>
+                    <td><strong>{{ membership.team.team_name }}</strong></td>
+                    <td>{{ membership.team.faculty.full_name }}</td>
+                    <td>
+                        {% if membership.team.leader %}
+                            {{ membership.team.leader.full_name }}
+                        {% else %}
+                            <span style="color: #dc3545;">Not assigned</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if membership.is_leader %}
+                            <span class="badge badge-success">Leader</span>
+                        {% else %}
+                            <span class="badge badge-info">Member</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if membership.team.project %}
+                            <span class="badge badge-success">Submitted</span>
+                        {% else %}
+                            <span class="badge badge-warning">Pending</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div style="text-align: center; padding: 2rem; color: #666;">
+            <p>You haven't been added to any team yet.</p>
+            <p style="margin-top: 1rem; font-size: 0.9rem;">
+                Please wait for your faculty to add you to a project team.
+            </p>
+        </div>
+    {% endif %}
+</div>
+
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h3>Project Submissions</h3>
+        <a href="{% url 'student_results' %}" class="btn">View Results</a>
+    </div>
+    
+    {% if projects %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Project Name</th>
+                    <th>Team</th>
+                    <th>Submitted On</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for project in projects %}
+                <tr>
+                    <td><strong>{{ project.project_name }}</strong></td>
+                    <td>{{ project.team.team_name }}</td>
+                    <td>{{ project.submitted_at|date:"M d, Y" }}</td>
+                    <td>
+                        {% if project.status == 'evaluated' %}
+                            <span class="badge badge-success">Evaluated</span>
+                        {% elif project.status == 'submitted' %}
+                            <span class="badge badge-info">Under Review</span>
+                        {% else %}
+                            <span class="badge badge-warning">Pending</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div style="text-align: center; padding: 2rem; color: #666;">
+            <p>No projects submitted yet.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

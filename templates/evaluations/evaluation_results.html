@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Evaluation Results{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2 style="color: #667eea;">Evaluation Results</h2>
+    <h3>{{ project.project_name }}</h3>
+    <p style="color: #666;">Team: {{ project.team.team_name }}</p>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+    <div class="card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+        <h3 style="color: white; margin-bottom: 1rem;">🤖 AI Evaluation</h3>
+        {% if evaluation.ai_marks %}
+            <div style="font-size: 3rem; font-weight: bold; margin-bottom: 1rem;">
+                {{ evaluation.ai_marks }}<span style="font-size: 1.5rem;">/100</span>
+            </div>
+            {% if evaluation.ai_feedback %}
+                <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(255,255,255,0.2); border-radius: 8px;">
+                    <strong>Feedback:</strong>
+                    <p style="margin-top: 0.5rem;">{{ evaluation.ai_feedback }}</p>
+                </div>
+            {% endif %}
+            <small style="opacity: 0.8; margin-top: 1rem; display: block;">
+                Evaluated: {{ evaluation.ai_evaluated_at|date:"M d, Y, g:i A" }}
+            </small>
+        {% else %}
+            <p>Not evaluated yet</p>
+        {% endif %}
+    </div>
+    
+    <div class="card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+        <h3 style="color: white; margin-bottom: 1rem;">👨‍🏫 Faculty Evaluation</h3>
+        {% if evaluation.faculty_marks %}
+            <div style="font-size: 3rem; font-weight: bold; margin-bottom: 1rem;">
+                {{ evaluation.faculty_marks }}<span style="font-size: 1.5rem;">/100</span>
+            </div>
+            {% if evaluation.faculty_feedback %}
+                <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(255,255,255,0.2); border-radius: 8px;">
+                    <strong>Feedback:</strong>
+                    <p style="margin-top: 0.5rem;">{{ evaluation.faculty_feedback }}</p>
+                </div>
+            {% endif %}
+            <small style="opacity: 0.8; margin-top: 1rem; display: block;">
+                Evaluated: {{ evaluation.faculty_evaluated_at|date:"M d, Y, g:i A" }}
+            </small>
+        {% else %}
+            <p>Not evaluated yet</p>
+        {% endif %}
+    </div>
+</div>
+
+{% if evaluation.ai_marks and evaluation.faculty_marks %}
+<div class="card" style="text-align: center; background: #f8f9fa;">
+    <h3 style="color: #667eea; margin-bottom: 1rem;">📈 Overall Performance</h3>
+    <div style="font-size: 2.5rem; font-weight: bold; color: #667eea;">
+        Average: {{ evaluation.ai_marks|add:evaluation.faculty_marks|floatformat:0|divisibleby:2 }}/100
+    </div>
+</div>
+{% endif %}
+
+<div style="text-align: center; margin-top: 1rem;">
+    <a href="{% url 'evaluate_project' project.id %}" class="btn">
+        ✏️ Edit Evaluation
+    </a>
+    <a href="{% url 'view_project' project.id %}" class="btn btn-secondary">
+        ← Back to Project
+    </a>
+</div>
+{% endblock %}
