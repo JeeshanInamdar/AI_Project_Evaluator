@@ -6,7 +6,6 @@ from pathlib import Path
 from decouple import config
 import os
 
-from django.conf.global_settings import SESSION_EXPIRE_AT_BROWSER_CLOSE
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
