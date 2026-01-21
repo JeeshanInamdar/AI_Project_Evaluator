@@ -17,7 +17,6 @@ db.sqlite3-journal
 
 # ⚠️ CRITICAL: Media Files (Uploaded project reports)
 media/
-media/project_reports/
 mediafiles/
 
 # Python
@@ -171,10 +170,16 @@ staticfiles/
 local_settings.py
 
 # ============================================
-# KEEP THESE FILES (EXCEPTIONS)
+# IMPORTANT: DO NOT IGNORE THESE FILES
 # ============================================
+# These files MUST be committed to Git
+# Remove any rules that would ignore them:
+
 !.gitignore
 !.env.example
 !README.md
 !requirements.txt
+!build.sh
+!manage.py
+!*/migrations/
 !*/migrations/__init__.py

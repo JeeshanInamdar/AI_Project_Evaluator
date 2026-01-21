@@ -2,81 +2,277 @@
 
 {% block title %}Home - AI Project Evaluator{% endblock %}
 
+{% block extra_css %}
+<style>
+    :root {
+        --lav-light: #f2efff;
+        --lav-mid: #d4ceff;
+        --lav-main: #9b8cff;
+        --lav-dark: #5c4fe4;
+        --text-dark: #2d2d2d;
+    }
+
+    body {
+        background: #faf8ff;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    /* =================== HERO =================== */
+    .hero {
+        text-align: center;
+        padding: 4rem 1.5rem;
+        background: linear-gradient(135deg, var(--lav-light), #ffffff);
+        border-radius: 20px;
+        box-shadow: 0 8px 30px rgba(120, 100, 220, 0.20);
+        margin-bottom: 3rem;
+    }
+    .hero h1 {
+        font-size: 3.4rem;
+        font-weight: 700;
+        color: var(--lav-dark);
+        margin-bottom: 1rem;
+    }
+    .hero p {
+        font-size: 1.25rem;
+        color: #555;
+        margin-bottom: 2rem;
+    }
+
+    /* BUTTONS */
+    .btn-main {
+        background: var(--lav-main);
+        padding: 14px 34px;
+        color: white;
+        font-size: 1.1rem;
+        border-radius: 10px;
+        transition: 0.3s;
+    }
+    .btn-main:hover {
+        background: var(--lav-dark);
+        transform: translateY(-4px);
+    }
+
+    .btn-alt {
+        background: var(--lav-light);
+        padding: 14px 34px;
+        color: var(--lav-dark);
+        font-size: 1.1rem;
+        border-radius: 10px;
+        border: 1px solid var(--lav-mid);
+        transition: 0.3s;
+    }
+    .btn-alt:hover {
+        background: var(--lav-mid);
+        color: white;
+        transform: translateY(-4px);
+    }
+
+    /* =================== CARDS =================== */
+    .card-grid {
+        display: grid;
+        gap: 1.6rem;
+        margin-top: 3rem;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+
+    .card {
+        background: white;
+        padding: 2rem;
+        text-align: center;
+        border-radius: 18px;
+        box-shadow: 0 6px 25px rgba(80, 70, 160, 0.15);
+        transition: 0.3s;
+    }
+    .card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 32px rgba(80, 70, 160, 0.25);
+    }
+    .card h3 {
+        font-size: 2.4rem;
+        margin-bottom: 0.5rem;
+        color: var(--lav-dark);
+    }
+    .card h4 {
+        font-weight: 650;
+        color: var(--lav-main);
+        margin-bottom: 0.4rem;
+    }
+    .card p {
+        color: #555;
+        font-size: 0.95rem;
+    }
+
+    /* =================== SECTIONS =================== */
+    .section {
+        background: white;
+        padding: 2rem 2rem;
+        border-radius: 18px;
+        margin-top: 2.5rem;
+        box-shadow: 0 6px 25px rgba(80, 70, 160, 0.15);
+    }
+    .section h2 {
+        color: var(--lav-dark);
+        margin-bottom: 1rem;
+    }
+
+    .section p {
+        color: #555;
+        line-height: 1.6;
+        font-size: 1.05rem;
+    }
+
+    .section-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 1.4rem;
+    }
+
+    .section-grid h3 {
+        color: var(--lav-main);
+    }
+
+    /* =================== CTA SECTION =================== */
+    .cta {
+        margin-top: 3rem;
+        background: linear-gradient(135deg, var(--lav-main), var(--lav-dark));
+        color: white;
+        padding: 3.5rem 1rem;
+        border-radius: 22px;
+        text-align: center;
+        box-shadow: 0 8px 35px rgba(60, 50, 150, 0.25);
+    }
+    .cta h1 {
+        font-size: 2.5rem;
+    }
+    .cta p {
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+        color: #f0f0ff;
+    }
+
+</style>
+{% endblock %}
+
 {% block content %}
-<div style="text-align: center; padding: 3rem 0;">
-    <h1 style="font-size: 3rem; color: #667eea; margin-bottom: 1rem;">
-        Welcome to AI Project Evaluator
-    </h1>
-    <p style="font-size: 1.2rem; color: #666; margin-bottom: 2rem;">
-        Streamline project evaluation with AI-powered assessment
-    </p>
-    
-    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-        <a href="{% url 'login' %}" class="btn" style="font-size: 1.1rem; padding: 15px 30px;">
-            Login
-        </a>
-        <a href="{% url 'faculty_register' %}" class="btn btn-secondary" style="font-size: 1.1rem; padding: 15px 30px;">
-            Faculty Registration
-        </a>
-        <a href="{% url 'student_register' %}" class="btn btn-secondary" style="font-size: 1.1rem; padding: 15px 30px;">
-            Student Registration
-        </a>
+
+<!-- ================= HERO ================= -->
+<div class="hero">
+    <h1>Welcome to AI Project Evaluator</h1>
+    <p>Experience smart, consistent and fast AI-powered project evaluation for colleges</p>
+
+    <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+        <a href="{% url 'login' %}" class="btn-main">Login</a>
+        <a href="{% url 'faculty_register' %}" class="btn-alt">Faculty Registration</a>
+        <a href="{% url 'student_register' %}" class="btn-alt">Student Registration</a>
     </div>
 </div>
 
-<div class="stats-grid" style="margin-top: 3rem;">
-    <div class="card" style="text-align: center;">
-        <h3 style="color: #667eea;">📚</h3>
+
+<!-- ================= FEATURES ================= -->
+<div class="card-grid">
+    <div class="card">
+        <h3>📚</h3>
         <h4>For Faculty</h4>
-        <p>Create project teams, manage submissions, and evaluate projects with AI assistance.</p>
+        <p>Create teams, evaluate projects, and manage submissions easily.</p>
     </div>
-    
-    <div class="card" style="text-align: center;">
-        <h3 style="color: #667eea;">👥</h3>
+
+    <div class="card">
+        <h3>👥</h3>
         <h4>For Students</h4>
-        <p>Join project teams, submit your work, and receive comprehensive evaluation feedback.</p>
+        <p>Submit work, receive feedback, and view detailed evaluation reports.</p>
     </div>
-    
-    <div class="card" style="text-align: center;">
-        <h3 style="color: #667eea;">🤖</h3>
-        <h4>AI-Powered</h4>
-        <p>Leverage Gemini AI for intelligent, consistent, and detailed project evaluations.</p>
+
+    <div class="card">
+        <h3>🤖</h3>
+        <h4>AI Powered</h4>
+        <p>Gemini AI ensures fair, unbiased, and consistent project evaluation.</p>
     </div>
 </div>
 
-<div class="card" style="margin-top: 2rem;">
-    <h2 style="color: #667eea; margin-bottom: 1rem;">How It Works</h2>
-    
-    <div style="display: grid; gap: 1.5rem;">
-        <div>
-            <h3>1. Faculty Creates Teams</h3>
-            <p>Faculty members create project teams and add up to 4 students using their USN (University Seat Numbers).</p>
+
+
+<!-- ================= ABOUT ================= -->
+<div class="section">
+    <h2>About AI Project Evaluator</h2>
+    <p>
+        AI Project Evaluator is a modern platform designed to help colleges streamline the project assessment process.
+        It uses advanced AI to analyze project documents, evaluate based on criteria, and generate accurate feedback.
+        The system reduces faculty workload while ensuring fairness for all students.
+    </p>
+</div>
+
+
+<!-- MEET THE MAKERS SECTION -->
+<div class="section">
+    <h2>Meet the Makers</h2>
+
+    <div class="card-grid" style="grid-template-columns: repeat(2, 1fr);">
+
+        <div class="card">
+            <h3>👨‍💻</h3>
+            <h4>Jeeshan Inamdar</h4>
+            <p>Full-stack developer, AI integrator & system architect.</p>
         </div>
-        
-        <div>
-            <h3>2. Team Leader Assignment</h3>
-            <p>Faculty designates one team member as the leader. Login credentials are automatically generated and emailed to the leader.</p>
+
+        <div class="card">
+            <h3>🎨</h3>
+            <h4>Designer</h4>
+            <p>Crafted the UI/UX and frontend representation.</p>
         </div>
-        
-        <div>
-            <h3>3. Project Submission</h3>
-            <p>Team leaders login and submit project reports (PDF) along with GitHub repository links.</p>
+
+        <div class="card">
+            <h3>🛠</h3>
+            <h4>Backend Engineer</h4>
+            <p>Developed the database, authentication & backend logic.</p>
         </div>
-        
-        <div>
-            <h3>4. AI Evaluation</h3>
-            <p>Projects are evaluated by Gemini AI based on faculty-defined criteria, providing detailed feedback and marks.</p>
+
+        <div class="card">
+            <h3>⚙️</h3>
+            <h4>ML Specialist</h4>
+            <p>Worked on model integration, evaluation tuning & testing.</p>
         </div>
-        
+
+    </div>
+</div>
+
+
+
+<!-- ================= WHY CHOOSE US ================= -->
+<div class="section">
+    <h2>Why Choose Us?</h2>
+
+    <div class="section-grid">
         <div>
-            <h3>5. Faculty Review</h3>
-            <p>Faculty members review AI evaluations, provide their own assessment, and finalize marks.</p>
+            <h3>✔ Saves Faculty Time</h3>
+            <p>AI handles evaluation so faculty can focus on teaching.</p>
         </div>
-        
+
         <div>
-            <h3>6. Results Publication</h3>
-            <p>Students can view comprehensive results including AI marks, faculty marks, and detailed feedback.</p>
+            <h3>✔ Consistent Scoring</h3>
+            <p>Every project is graded using the same criteria.</p>
+        </div>
+
+        <div>
+            <h3>✔ Better Student Feedback</h3>
+            <p>Students receive detailed suggestions and scoring breakdown.</p>
+        </div>
+
+        <div>
+            <h3>✔ Easy to Use</h3>
+            <p>Clean, simple dashboard for faculty & students.</p>
         </div>
     </div>
 </div>
+
+
+<!-- ================= CTA ================= -->
+<div class="cta">
+    <h1>Ready to Make Project Evaluation Smarter?</h1>
+    <p>Join today and explore the power of AI for your academic workflow.</p>
+
+    <a href="{% url 'faculty_register' %}" class="btn-main" style="background:white; color:var(--lav-dark);">
+        Get Started as Faculty
+    </a>
+</div>
+
 {% endblock %}
